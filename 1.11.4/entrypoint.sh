@@ -16,7 +16,7 @@ done
 sed -i "s/#REPLACE_PAGESPEED/$PAGESPEED/g" /etc/nginx/conf.d/pagespeed.conf
 
 if nginx -t ; then
-    exec nginx 
+    exec nginx -g "daemon off;"
 else
     echo "Nginx did not start, config issue?"
 fi
