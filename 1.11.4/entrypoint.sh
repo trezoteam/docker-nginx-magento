@@ -3,7 +3,7 @@ for store in $(tr '|' $'\n' <<< "$STORES") ; do
     domain="$(cut -f1 -d: <<< "$store")"
     mage_type="$(cut -f2 -d: <<< "$store")"
     mage_code="$(cut -f3 -d: <<< "$store")"
-    server_root="$(cut -f3 -d: <<< "$store")"
+    server_root="$(cut -f4 -d: <<< "$store")"
     cp /etc/nginx/sites-available/{template,${domain}.conf}
     ln -s ../sites-available/${domain}.conf /etc/nginx/sites-enabled/
     sed -i "s/#REPLACE_SERVER_NAME/${domain}/g" /etc/nginx/sites-available/${domain}.conf
