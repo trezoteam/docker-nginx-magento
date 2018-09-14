@@ -17,6 +17,7 @@ for store in $(tr '|' $'\n' <<< "$STORES") ; do
     fi
 done
 
+sed -i "s/#REPLACE_PHP_BACKEND_MAPPING/default php${PHP_VERSION/\./_}_backend;/g" /etc/nginx/conf.d/php-backend-mappings.conf #TODO: allow domain-specific mapping
 sed -i "s/#REPLACE_PAGESPEED/$PAGESPEED/g" /etc/nginx/conf.d/pagespeed.conf
 
 if nginx -t ; then
