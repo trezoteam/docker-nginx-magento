@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install wget make gcc -y \
     && mkdir /etc/nginx/conf.d/ 
 
 RUN apt-get purge wget make gcc build-essential libgeoip-dev zlib1g-dev libpcre3-dev unzip libssl-dev -y --autoremove && rm -Rf /var/cache/* && rm -Rf /opt/*
-RUN rm -Rf /etc/nginx/ && mkdir /etc/nginx
+RUN rm -Rf /etc/nginx/ && mkdir /etc/nginx && mkdir /etc/nginx/sites-enabled
 
 COPY ./config /etc/nginx
 COPY entrypoint.sh /entrypoint.sh
