@@ -9,10 +9,12 @@ for store in $(tr '|' $'\n' <<< "$STORES") ; do
     sed -i "s/#REPLACE_SERVER_NAME/${domain}/g" /etc/nginx/sites-available/${domain}.conf
     sed -i "s/#REPLACE_MVERSION/${MVERSION}/g" /etc/nginx/sites-available/${domain}.conf
     sed -i "s/#REPLACE_SERVER_ROOT/${server_root}/g" /etc/nginx/sites-available/${domain}.conf
-    test ! grep "${domain} ${mage_code};" \
-    && sed -i "s/\(\s*\)#REPLACE_MAGE_CODE_MAPPING/\1#REPLACE_MAGE_CODE_MAPPING\n\1${domain} ${mage_code};/g" /etc/nginx/conf.d/mage_code.conf
-    test ! "${domain} ${mage_type};" \
-    && sed -i "s/\(\s*\)#REPLACE_MAGE_TYPE_MAPPING/\1#REPLACE_MAGE_TYPE_MAPPING\n\1${domain} ${mage_type};/g" /etc/nginx/conf.d/mage_type.conf
+    if ! grep "${domain} ${mage_code};" /etc/nginx/conf.d/mage_code.conf ; then
+    	sed -i "s/\(\s*\)#REPLACE_MAGE_CODE_MAPPING/\1#REPLACE_MAGE_CODE_MAPPING\n\1${domain} ${mage_code};/g" /etc/nginx/conf.d/mage_code.conf
+    fi
+    if ! grep "${domain} ${mage_type};" /etc/nginx/conf.d/mage_type.conf ; then
+        sed -i "s/\(\s*\)#REPLACE_MAGE_TYPE_MAPPING/\1#REPLACE_MAGE_TYPE_MAPPING\n\1${domain} ${mage_type};/g" /etc/nginx/conf.d/mage_type.conf
+    fi
 done
 
 sed -i "s/#REPLACE_PAGESPEED/$PAGESPEED/g" /etc/nginx/conf.d/pagespeed.conf
@@ -22,3 +24,4 @@ if nginx -t ; then
 else
     echo "Nginx did not start, config issue?"
 fi
+
