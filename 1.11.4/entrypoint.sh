@@ -1,7 +1,4 @@
 #!/bin/bash
-MVERSION="m2"
-PAGESPEED="off"
-STORES='loja1.dominio.com.br:store:default:/var/www/html|loja2.dominio.com.br:store:default:/var/www/html'
 for store in $(tr '|' $'\n' <<< "$STORES") ; do
     domain="$(cut -f1 -d: <<< "$store")"
     mage_type="$(cut -f2 -d: <<< "$store")"
