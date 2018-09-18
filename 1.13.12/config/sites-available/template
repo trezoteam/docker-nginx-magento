@@ -1,0 +1,26 @@
+include /etc/nginx/conf.d/mage_code.conf;
+include /etc/nginx/conf.d/mage_type.conf;
+
+server {
+    listen 80;
+    listen 443 ssl;
+    ssl_certificate /etc/nginx/ssl/server.crt;
+    ssl_certificate_key /etc/nginx/ssl/server.key;
+    
+    server_name #REPLACE_SERVER_NAME;
+
+    location / {
+        include /etc/nginx/conf.d/proxy.conf;
+        proxy_pass http://127.0.0.1:8080;
+    }
+}
+
+server {
+    listen 8080;
+    server_name #REPLACE_SERVER_NAME;
+    set $MAGE_ROOT #REPLACE_SERVER_ROOT;
+    access_log /var/log/nginx/#REPLACE_SERVER_NAME.log main;
+    error_log /var/log/nginx/#REPLACE_SERVER_NAME.error.log  error;
+
+    include /etc/nginx/conf.d/#REPLACE_MVERSION/locations.conf;
+}
