@@ -9,6 +9,9 @@ for store in $(tr '|' $'\n' <<< "$STORES") ; do
     sed -i "s/#REPLACE_SERVER_NAME/${domain}/g" /etc/nginx/sites-available/${domain}.conf
     sed -i "s/#REPLACE_MVERSION/${MVERSION}/g" /etc/nginx/sites-available/${domain}.conf
     sed -i "s!#REPLACE_SERVER_ROOT!${server_root}!g" /etc/nginx/sites-available/${domain}.conf
+    if [ "$MVERSION" = "m2" ];then
+        sed -i "s/\(\s*\)proxy_pass.*/\1proxy_pass http:\/\/varnish:6081;/g" /etc/nginx/sites-available/${domain}.conf
+    fi
     if ! grep "${domain} ${mage_code};" /etc/nginx/conf.d/mage_code.conf ; then
     	sed -i "s/\(\s*\)#REPLACE_MAGE_CODE_MAPPING/\1#REPLACE_MAGE_CODE_MAPPING\n\1${domain} ${mage_code};/g" /etc/nginx/conf.d/mage_code.conf
     fi
