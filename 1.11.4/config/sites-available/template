@@ -9,9 +9,6 @@ server {
     
     server_name #REPLACE_SERVER_NAME;
 
-    location /media {
-        try_files $uri /2.png;
-    }
     location /skin/frontend/athlete/default/images {
             try_files $uri /2.png;
     }
