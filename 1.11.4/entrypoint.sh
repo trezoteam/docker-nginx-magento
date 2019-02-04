@@ -18,7 +18,7 @@ for store in $(tr '|' $'\n' <<< "$STORES") ; do
 done
 
 # Take any server root from the config files
-PROJECT_ROOT=$(grep -w root /etc/nginx -r | head -n1 | grep -Po 'root\K[^;]*')
+PROJECT_ROOT=$(grep -w root /etc/nginx/sites-enabled/ -R | head -n1 | grep -Po 'root\K[^;]*')
 outsider_uid=$(ls -l $PROJECT_ROOT/composer.json | cut -f 3 -d ' ')
 outsider_gid=$(ls -l $PROJECT_ROOT/composer.json | cut -f 4 -d ' ')
 
