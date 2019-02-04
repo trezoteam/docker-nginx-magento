@@ -37,4 +37,6 @@ RUN rm -Rf /tmp/* /etc/nginx/ && mkdir /etc/nginx && mkdir /etc/nginx/sites-enab
 COPY ./config /etc/nginx
 COPY entrypoint.sh /entrypoint.sh
 
+RUN groupadd http_group && useradd -m http_user -g http_group
+
 CMD ["/entrypoint.sh"]
