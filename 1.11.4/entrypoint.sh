@@ -17,6 +17,19 @@ for store in $(tr '|' $'\n' <<< "$STORES") ; do
     fi
 done
 
+# Take any server root from the config files
+PROJECT_ROOT=$(grep -w root /etc/nginx -r | head -n1 | grep -Po 'root\K[^;]*')
+outsider_uid=$(ls -l $PROJECT_ROOT/composer.json | cut -f 3 -d ' ')
+outsider_gid=$(ls -l $PROJECT_ROOT/composer.json | cut -f 4 -d ' ')
+
+if [[ $outsider_uid =~ ^[0-9]*$ ]]; then
+    usermod http_user -u $outsider_uid
+fi
+
+if [[ $outsider_gid =~ ^[0-9]*$ ]]; then
+    usermod http_group -g $outsider_gid
+fi
+
 sed -i "s/#REPLACE_PHP_BACKEND_MAPPING/default php${PHP_VERSION/\./_}_backend;/g" /etc/nginx/conf.d/php-backend-mappings.conf #TODO: allow domain-specific mapping
 sed -i "s/#REPLACE_PAGESPEED/$PAGESPEED/g" /etc/nginx/conf.d/pagespeed.conf
 
