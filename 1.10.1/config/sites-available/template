@@ -1,0 +1,25 @@
+include /etc/nginx/conf.d/mage_code.conf;
+include /etc/nginx/conf.d/mage_type.conf;
+
+server {
+    listen 80;
+    listen 443 ssl;
+    ssl_certificate /etc/nginx/ssl/server.crt;
+    ssl_certificate_key /etc/nginx/ssl/server.key;
+    
+    server_name #REPLACE_SERVER_NAME;
+
+    location /skin/frontend/athlete/default/images {
+            try_files $uri /2.png;
+    }
+    location /skin/frontend/base/default/images {
+           try_files $uri /2.png;
+    }
+
+    set $MAGE_ROOT #REPLACE_SERVER_ROOT;
+    access_log /var/log/nginx/#REPLACE_SERVER_NAME.log main;
+    error_log /var/log/nginx/#REPLACE_SERVER_NAME.error.log  error;
+
+    include /etc/nginx/conf.d/#REPLACE_MVERSION/locations.conf;
+
+}
